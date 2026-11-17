@@ -15,20 +15,20 @@ Please check out this video below for an overview of some of the features and us
 </div>
 
 ## Motion Control
-Steps to facilitate motion planning and control of the Micromate robot based on a generated trajectory.
+**Steps to facilitate motion planning and control of the Micromate robot based on a generated trajectory.**
+[edit script paths]
+Setup:
 
-**Setup**:
+1. Build Slicer using the [generic build instructions](https://slicer.readthedocs.io/en/latest/developer_guide/build_instructions/linux.html).
 
-Build Slicer using the [generic build instructions](https://slicer.readthedocs.io/en/latest/developer_guide/build_instructions/linux.html).
+2. Compile the SlicerROS2 module according to [these instructions](https://slicer-ros2.readthedocs.io/en/v1.2/pages/getting-started.html), using the [my-motion-control branch](https://github.com/msong33/slicer_ros2_module/tree/my-motion-control) of this repository (this and the following steps assume the use of the ROS workspace directory ~/ros2_ws, with the SlicerROS2 module source code cloned under ~/ros2_ws/src/slicer_ros2_module).
 
-Compile the SlicerROS2 module according to [these instructions](https://slicer-ros2.readthedocs.io/en/v1.2/pages/getting-started.html), using the [my-motion-control branch](https://github.com/msong33/slicer_ros2_module/tree/my-motion-control) of this repository (this and the following steps assume the use of the ROS workspace directory ~/ros2_ws, with the SlicerROS2 module source code cloned under ~/ros2_ws/src/slicer_ros2_module).
+3. Clone the [Micromate repository](https://github.com/msong33/micromate) for Micromate-ROS integration into ~/ros2_ws/src/micromate and rebuild the workspace.
 
-Clone the [micromate repository](https://github.com/msong33/micromate) for Micromate-ROS integration into ~/ros2_ws/src/micromate and rebuild the workspace.
+4. Download the [VerSe 2020 dataset](https://osf.io/4skx2/files/osfstorage) into ~/ros2_ws/src/dataset for use with the motion control module.
 
-Download the [VerSe 2020 dataset](https://osf.io/4skx2/files/osfstorage) into ~/ros2_ws/src/dataset for use with the motion control module.
-
-
-For the following steps, make sure to source the ROS workspace in all new terminals (```cd ros2_ws```, ```source install/setup.bash```)
+\
+Run each of the following commands in separate, sourced terminals to setup the Slicer environment (```cd ros2_ws```, ```source install/setup.bash``` in each terminal):
 
 To load the Micromate robot, run the two following commands in two separate terminals:
 
@@ -56,7 +56,7 @@ Clear old trajectories, if necessary: ```clearPlans()```
 
 Open the Slicer ROS module and click **+ Add New Robot** to connect Slicer to the robot description published by the previously launched Micromate driver, then click **Load Robot**
 
-Open the Motion Control module, [EDIT]
+Open the Motion Control module, [EDIT] xy_needle planning group
 
 Perform motion planning and control by running the following:
 ```exec(open('~/ros2_ws/src/src/slicer_ros2_module/micromate_motion_control.py').read())```
