@@ -26,7 +26,7 @@ planHome parameters:
         no argument: robot joints also return to home
 
 
-exec(open('/home/tunde/imerse/motion_control/micromate_motion_control.py').read())
+exec(open('~/ros2_ws/src/src/slicer_ros2_module/micromate_motion_control.py').read())
 
 out = runMicromate(res, 'left', stage='move')
 
