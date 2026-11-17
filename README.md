@@ -55,15 +55,15 @@ Setup:
 
 6. Open the Slicer ROS module and click **+ Add New Robot** to connect Slicer to the robot description published by the previously launched Micromate driver, then click **Load Robot**
 
-7. Open the Motion Control module, [**xy_needle, etc -- EDIT**]
+7. Open the Motion Control module, [**use robot, xy_needle, etc -- EDIT**]
 
 8. Perform motion planning and control:
 
-&emsp; &emsp; Load script: ```exec(open('~/ros2_ws/src/src/slicer_ros2_module/micromate_motion_control.py').read())```
+&emsp; &emsp; Load script (see script file for additional details on the functions called below): ```exec(open('~/ros2_ws/src/src/slicer_ros2_module/micromate_motion_control.py').read())```
 
-&emsp; &emsp; **Plan**, **Preview**, and **Execute** the robot’s x, y, and tilt (no needle movement): ```out = runMicromate(res, 'left', stage='move')```
+&emsp; &emsp; **Plan**, **Preview**, and **Execute** the robot’s x, y, and tilt *without* needle movement (replace 'left' with 'right' to switch the side of the vertebra to plan and execute on): ```out = runMicromate(res, 'left', stage='move')```
 
-&emsp; &emsp; **Plan**, **Preview**, and **Execute** needle insertion: ```planSide(res, 'left', stage='insert')```
+&emsp; &emsp; **Plan**, **Preview**, and **Execute** needle insertion (replace 'left' with 'right' to switch the side of the vertebra to plan and execute on): ```planSide(res, 'left', stage='insert')```
 
 &emsp; &emsp; Retract needle: ```planHome(retract_only=True)```
 
