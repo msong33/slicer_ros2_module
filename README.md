@@ -15,64 +15,59 @@ Please check out this video below for an overview of some of the features and us
 </div>
 
 ## Motion Control
-**Steps to facilitate motion planning and control of the Micromate robot based on a generated trajectory.**
+**Steps to facilitate motion planning and control of the Micromate robot based on a generated trajectory**
 
 Setup:
 
-1. Build Slicer using the [generic build instructions](https://slicer.readthedocs.io/en/latest/developer_guide/build_instructions/linux.html).
+1. Build Slicer using the [generic build instructions](https://slicer.readthedocs.io/en/latest/developer_guide/build_instructions/linux.html)
 
-2. Compile the SlicerROS2 module according to [these instructions](https://slicer-ros2.readthedocs.io/en/v1.2/pages/getting-started.html), using the [my-motion-control branch](https://github.com/msong33/slicer_ros2_module/tree/my-motion-control) of this repository (this and the following steps assume the use of the ROS workspace directory ~/ros2_ws, with the SlicerROS2 module source code cloned under ~/ros2_ws/src/slicer_ros2_module).
+2. Compile the SlicerROS2 module according to [these instructions](https://slicer-ros2.readthedocs.io/en/v1.2/pages/getting-started.html), using the [my-motion-control branch](https://github.com/msong33/slicer_ros2_module/tree/my-motion-control) of this repository (this and the following steps assume the use of the ROS workspace directory ~/ros2_ws, with the SlicerROS2 module source code cloned under ~/ros2_ws/src/slicer_ros2_module)
 
-3. Clone the [Micromate repository](https://github.com/msong33/micromate) for Micromate-ROS integration into ~/ros2_ws/src/micromate and rebuild the workspace.
+3. Clone the [Micromate repository](https://github.com/msong33/micromate) for Micromate-ROS integration into ~/ros2_ws/src/micromate and rebuild the workspace
 
-4. Download the [VerSe 2020 dataset](https://osf.io/4skx2/files/osfstorage) into ~/ros2_ws/src/dataset for use with the motion control module.
+4. Download the [VerSe 2020 dataset](https://osf.io/4skx2/files/osfstorage) into ~/ros2_ws/src/dataset for use with the motion control module
 
 \
 **Run each of the following commands in separate, sourced terminals to setup the Slicer environment (```cd ros2_ws && source install/setup.bash``` in each terminal):**
 
 1. Load the Micromate robot:
 
-```ros2 launch micromate_ros2_driver micromate_with_custom_ros2_bringup.launch.py use_mock_hardware:=true```
+&emsp; &emsp; ```ros2 launch micromate_ros2_driver micromate_with_custom_ros2_bringup.launch.py use_mock_hardware:=true```
 
-```ros2 launch custom_needle_moveit move_group.launch.py```
+&emsp; &emsp; ```ros2 launch custom_needle_moveit move_group.launch.py```
 
 2. Run Slicer: ```ros2 run slicer_ros2_module slicer```
 
-
+\
 **Complete the following steps in Slicer, with all commands run in the Slicer Python Console:**
 
 1. Run the trajectory generator: ```exec(open('~/ros2_ws/src/src/slicer_ros2_module/transpedicular_planner.py').read())```
 
-Load in the CT and segmentation files (replace instances of [DATA FOLDER] and [FILE] with the appropriate file paths (e.g. 01_training and verse503)): ```ct, seg = loadCase('~/ros2_ws/src/dataset/[DATA FOLDER]/rawdata/sub-[FILE]/sub-[FILE]_dir-ax_ct.nii.gz', '~/ros2_ws/src/dataset/[DATA FOLDER]/derivatives/sub-[FILE]/sub-[FILE]_dir-ax_seg-vert_msk.nii.gz')```
+2. Load in the CT and segmentation files, replacing instances of [DATA_SUBSET] and [FILE] with the appropriate file paths (e.g. 01_training and verse503): ```ct, seg = loadCase('~/ros2_ws/src/dataset/[DATA_SUBSET]/rawdata/sub-[FILE]/sub-[FILE]_dir-ax_ct.nii.gz', '~/ros2_ws/src/dataset/[DATA_SUBSET]/derivatives/sub-[FILE]/sub-[FILE]_dir-ax_seg-vert_msk.nii.gz')```
 
-Open the Segmentation module and click **Show 3D** to visualize the 3D spine model
+3. Open the Segmentation module and click **Show 3D** to visualize the 3D spine model
 
-See vertebrae labels, if desired: ```listSegments(ct, seg)```
+4. See vertebrae labels, if desired: ```listSegments(ct, seg)```
 
-Generate trajectories, specifying the segment label: ```p, res = planVertebra(ct, seg, 'Segment_21')```
+5. Generate trajectories, specifying the segment label (Segment_21 used here as an example): ```p, res = planVertebra(ct, seg, 'Segment_21')```
 
-Clear old trajectories, if necessary: ```clearPlans()```
+&emsp; &emsp; Run ```clearPlans()``` to clear old trajectories, if necessary
 
+6. Open the Slicer ROS module and click **+ Add New Robot** to connect Slicer to the robot description published by the previously launched Micromate driver, then click **Load Robot**
 
-Open the Slicer ROS module and click **+ Add New Robot** to connect Slicer to the robot description published by the previously launched Micromate driver, then click **Load Robot**
+7. Open the Motion Control module, [**xy_needle, etc -- EDIT**]
 
-Open the Motion Control module, [EDIT] xy_needle planning group
+8. Perform motion planning and control:
 
-Perform motion planning and control by running the following:
-```exec(open('~/ros2_ws/src/src/slicer_ros2_module/micromate_motion_control.py').read())```
+&emsp; &emsp; Load script: ```exec(open('~/ros2_ws/src/src/slicer_ros2_module/micromate_motion_control.py').read())```
 
-```out = runMicromate(res, 'left', stage='move')```
+&emsp; &emsp; **Plan**, **Preview**, and **Execute** the robot’s x, y, and tilt (no needle movement): ```out = runMicromate(res, 'left', stage='move')```
 
-Plan, Preview, and Execute the robot’s x, y, and tilt (no needle movement) following this command 
+&emsp; &emsp; **Plan**, **Preview**, and **Execute** needle insertion: ```planSide(res, 'left', stage='insert')```
 
-```planSide(res, 'left', stage='insert')```
+&emsp; &emsp; Retract needle: ```planHome(retract_only=True)```
 
-Plan, Preview, and Execute needle insertion following this command 
-
-```planHome(retract_only=True)```
-
-```planHome()```
-Home needle and joints
+&emsp; &emsp; Home all robot joints: ```planHome()```
 
 ## Acknowledgement
 This project is supported by:
