@@ -16,7 +16,7 @@ Please check out this video below for an overview of some of the features and us
 
 ## Motion Control
 **Steps to facilitate motion planning and control of the Micromate robot based on a generated trajectory.**
-[edit script paths]
+
 Setup:
 
 1. Build Slicer using the [generic build instructions](https://slicer.readthedocs.io/en/latest/developer_guide/build_instructions/linux.html).
@@ -28,20 +28,20 @@ Setup:
 4. Download the [VerSe 2020 dataset](https://osf.io/4skx2/files/osfstorage) into ~/ros2_ws/src/dataset for use with the motion control module.
 
 \
-Run each of the following commands in separate, sourced terminals to setup the Slicer environment (```cd ros2_ws```, ```source install/setup.bash``` in each terminal):
+**Run each of the following commands in separate, sourced terminals to setup the Slicer environment (```cd ros2_ws && source install/setup.bash``` in each terminal):**
 
-To load the Micromate robot, run the two following commands in two separate terminals:
+1. Load the Micromate robot:
 
 ```ros2 launch micromate_ros2_driver micromate_with_custom_ros2_bringup.launch.py use_mock_hardware:=true```
 
 ```ros2 launch custom_needle_moveit move_group.launch.py```
 
-In another terminal, run Slicer by using the command: ```ros2 run slicer_ros2_module slicer```
+2. Run Slicer: ```ros2 run slicer_ros2_module slicer```
 
 
-The following steps are completed in Slicer, with any commands run in the Slicer Python Console:
+**Complete the following steps in Slicer, with all commands run in the Slicer Python Console:**
 
-Run the trajectory generator: ```exec(open('~/ros2_ws/src/transpedicular_planner.py').read())```
+1. Run the trajectory generator: ```exec(open('~/ros2_ws/src/src/slicer_ros2_module/transpedicular_planner.py').read())```
 
 Load in the CT and segmentation files (replace instances of [DATA FOLDER] and [FILE] with the appropriate file paths (e.g. 01_training and verse503)): ```ct, seg = loadCase('~/ros2_ws/src/dataset/[DATA FOLDER]/rawdata/sub-[FILE]/sub-[FILE]_dir-ax_ct.nii.gz', '~/ros2_ws/src/dataset/[DATA FOLDER]/derivatives/sub-[FILE]/sub-[FILE]_dir-ax_seg-vert_msk.nii.gz')```
 
